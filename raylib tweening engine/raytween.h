@@ -39,7 +39,8 @@ float easeOutBounceHelper(float x);
 class Raytween {
 private:
 	long incremental_id = 0;
-	std::vector<std::shared_ptr<Tween>> tweens;
+	std::vector<std::shared_ptr<Tween>> tweens = {};
+	std::vector<std::shared_ptr<Tween>> pendingTweens = {};
 	Raytween(){}
 
 public:

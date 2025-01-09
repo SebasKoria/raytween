@@ -22,16 +22,27 @@ float easeOutBounceHelper(float x)
 
 void Raytween::DoTweens(float deltaTime)
 {
-	auto tweenIterator = Raytween::GetInstance().tweens.begin();
+	auto& instance = Raytween::GetInstance();
+	auto& tweens = instance.tweens;
+	auto& pendingTweens = instance.pendingTweens;
 
-	for (tweenIterator; tweenIterator != Raytween::GetInstance().tweens.end(); tweenIterator++)
+	for (auto it = tweens.begin(); it != tweens.end();)
 	{
-		(*tweenIterator)->UpdateValue(deltaTime);
+		(*it)->UpdateValue(deltaTime);
 
-		if ((*tweenIterator)->complete) {
-			tweenIterator = Raytween::GetInstance().tweens.erase(tweenIterator);
-			if (tweenIterator == Raytween::GetInstance().tweens.end()) break;
+		if ((*it)->complete) {
+			it = tweens.erase(it);  // erase devuelve un iterador válido
 		}
+		else {
+			++it;  // Solo incrementa si no se eliminó
+		}
+	}
+
+	if (!pendingTweens.empty()) {
+		tweens.insert(tweens.end(), pendingTweens.begin(), pendingTweens.end());
+		pendingTweens.clear();
+
+		std::cout << "Tween added to tweens. Total tweens: " << instance.tweens.size() << "\n";
 	}
 }
 
@@ -42,8 +53,11 @@ std::shared_ptr<Tween> Raytween::Value(
 	std::function<float(float)> easingFunction
 )
 {
-	std::shared_ptr<Tween> newTweenPtr = std::make_shared<Tween>(Raytween::GetInstance().incremental_id++, from, to, duration);
+	auto& instance = Raytween::GetInstance();
+	std::shared_ptr<Tween> newTweenPtr = std::make_shared<Tween>(instance.incremental_id++, from, to, duration);
 	newTweenPtr->SetEasingFunction(easingFunction);
-	Raytween::GetInstance().tweens.push_back(newTweenPtr);
+	instance.pendingTweens.push_back(newTweenPtr);
+
+	std::cout << "Tween added to pending tweens. Total  pending tweens: " << instance.pendingTweens.size() << "\n";
 	return newTweenPtr;
 }

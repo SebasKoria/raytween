@@ -32,8 +32,5 @@
     <ClInclude Include="tween.h">
       <Filter>Archivos de origen</Filter>
     </ClInclude>
-    <ClInclude Include="reasings.h">
-      <Filter>Archivos de recursos</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
