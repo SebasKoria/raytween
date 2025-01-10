@@ -1,7 +1,8 @@
 #pragma once
 #include <functional>
+#include <memory>
 
-class Tween {
+class Tween : public std::enable_shared_from_this<Tween> {
 private:
 	long id;
 	float from;
@@ -20,8 +21,8 @@ public:
 
 	Tween(long id, float _from, float _to, float _duration);
 
-	void SetOnUpdate(const std::function<void(float)> func) { onUpdate = func; }
-	void SetOnComplete(const std::function<void()> func) { onComplete = func; }
+	std::shared_ptr<Tween> SetOnUpdate(const std::function<void(float)> func);
+	std::shared_ptr<Tween> SetOnComplete(const std::function<void()> func);
 	void SetEasingFunction(const std::function<float(float)> func) { easingFunction = func; }
 
 	void UpdateValue(float deltaTime);

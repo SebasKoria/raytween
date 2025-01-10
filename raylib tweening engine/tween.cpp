@@ -29,6 +29,7 @@ void Tween::UpdateValue(float deltaTime)
 	{
 		value = to;
 		complete = true;
+		onUpdate(value);
 		onComplete();
 	}
 	else
@@ -39,3 +40,15 @@ void Tween::UpdateValue(float deltaTime)
 }
 
 float Tween::GetValue() { return value; }
+
+std::shared_ptr<Tween> Tween::SetOnUpdate(const std::function<void(float)> func)
+{
+	onUpdate = func;
+	return shared_from_this();
+}
+
+std::shared_ptr<Tween> Tween::SetOnComplete(const std::function<void()> func)
+{
+	onComplete = func;
+	return shared_from_this();
+}

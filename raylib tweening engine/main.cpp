@@ -55,7 +55,7 @@ int main(void)
         BeginDrawing();
         Raytween::DoTweens(GetFrameTime());
 
-        int keyPressed = GetKeyPressed();
+       int keyPressed = GetKeyPressed();
 
         if (keyPressed != 0) {
             Raytween::Value(100, 700, 1, GetEasing(keyPressed))
