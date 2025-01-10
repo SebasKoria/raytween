@@ -61,19 +61,13 @@ while (!WindowShouldClose())
 {  
     /* ... */  
 
-    // Ensure this is called inside the main loop
-    Raytween::DoTweens(GetFrameTime());  
+    Raytween::DoTweens(GetFrameTime()); // Ensure this is called inside the main loop
 
-    if (IsKeyPressed(KEY_SPACE)) {  
-        auto tween = Raytween::Value(100, 700, 1, EASE_OUT_BOUNCE);  
-
-        tween->SetOnUpdate([&ballXPosition](float value) {  
-            ballXPosition = value;  
-        });  
-
-        tween->SetOnComplete([]() {  
-            std::cout << "Complete!" << std::endl;  
-        });  
+    if (IsKeyPressed(KEY_SPACE))
+    {  
+        Raytween::Value(100, 700, 1, EASE_OUT_BOUNCE)
+            ->SetOnUpdate([&ballXPosition](float value) { ballXPosition = value; })
+            ->SetOnComplete([]() { std::cout << "Complete!" << std::endl; });
     }  
 
     /* ... */  
