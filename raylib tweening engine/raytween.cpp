@@ -31,18 +31,16 @@ void Raytween::DoTweens(float deltaTime)
 		(*it)->UpdateValue(deltaTime);
 
 		if ((*it)->complete) {
-			it = tweens.erase(it);  // erase devuelve un iterador válido
+			it = tweens.erase(it);
 		}
 		else {
-			++it;  // Solo incrementa si no se eliminó
+			++it;
 		}
 	}
 
 	if (!pendingTweens.empty()) {
 		tweens.insert(tweens.end(), pendingTweens.begin(), pendingTweens.end());
 		pendingTweens.clear();
-
-		std::cout << "Tween added to tweens. Total tweens: " << instance.tweens.size() << "\n";
 	}
 }
 
@@ -58,6 +56,5 @@ std::shared_ptr<Tween> Raytween::Value(
 	newTweenPtr->SetEasingFunction(easingFunction);
 	instance.pendingTweens.push_back(newTweenPtr);
 
-	std::cout << "Tween added to pending tweens. Total  pending tweens: " << instance.pendingTweens.size() << "\n";
 	return newTweenPtr;
 }
